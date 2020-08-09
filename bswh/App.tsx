@@ -19,15 +19,15 @@ const App = () => {
   }, [])
 
   return (
-    <SafeAreaProvider mode="margin" style={containerStyle}>
-      <InAppNotificationProvider backgroundColour="#E61E2B">
+    <InAppNotificationProvider backgroundColour="#E61E2B">
+      <SafeAreaProvider mode="margin" style={containerStyle}>
         <StatusBar hidden />
         <NavigationContainer>
           <Navigator />
         </NavigationContainer>
         <NetworkDetection />
-      </InAppNotificationProvider>
-    </SafeAreaProvider>
+      </SafeAreaProvider>
+    </InAppNotificationProvider>
   )
 }
 
