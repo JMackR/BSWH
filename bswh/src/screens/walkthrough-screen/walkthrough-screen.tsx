@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react"
-import { View, FlatList, Dimensions, Animated, ImageBackground, TouchableOpacity, Image } from "react-native"
+import { View, FlatList, Dimensions, Animated, ImageBackground, Image } from "react-native"
+import { useNavigation } from "@react-navigation/native"
 import { Text } from "../../components"
 import { styles } from "../../theme/styles"
 import { mergeStyles } from "../../utils/styles"
@@ -7,8 +8,9 @@ import { frames } from "./enums"
 
 const { width, height } = Dimensions.get("window")
 
-export const WalkThroughScreen = ({ navigation, route }) => {
+export const WalkThroughScreen = () => {
   const textCarousel = useRef()
+  const { navigate } = useNavigation()
   const [currentBackgroundIndex, setCurrentBackgroundIndex] = useState(0)
 
   const opac = new Animated.Value(1)
@@ -17,8 +19,6 @@ export const WalkThroughScreen = ({ navigation, route }) => {
     inputRange: [0, 0.25, 0.5, 0.75, 1],
     outputRange: [1, 0.75, 0.3, 0.75, 1],
   })
-
-  const { invite } = route.params
 
   useEffect(() => {
     Animated.timing(opac, {
@@ -43,6 +43,7 @@ export const WalkThroughScreen = ({ navigation, route }) => {
             pagingEnabled
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={1}
+            keyExtractor={(item, index) => `frames-${item?.screen}`}
             onScroll={({ nativeEvent }) => {
               const page = Math.abs(nativeEvent.contentOffset.x / width)
               const percentageOfSwipe = page - Math.floor(page)
@@ -61,11 +62,11 @@ export const WalkThroughScreen = ({ navigation, route }) => {
               }).start()
 
               if (page > frames.length - 2) {
-                navigation.navigate("UserPermissions", { invite })
+                navigate("Directory")
               }
             }}
             renderItem={({ item, index }: { item: { screen: string }; index: number }) => (
-              <View style={mergeStyles({ width })}>
+              <View key={`frames-${item?.screen}`} style={mergeStyles({ width })}>
                 <Image
                   style={mergeStyles(styles.alignCenter, {
                     width,
@@ -73,7 +74,7 @@ export const WalkThroughScreen = ({ navigation, route }) => {
                     marginTop: width * 0.15,
                     borderRadius: 3,
                   })}
-                  resizeMode={FastImage.resizeMode.contain}
+                  resizeMode={"contain"}
                   source={item.screen}
                 />
               </View>
@@ -97,7 +98,7 @@ export const WalkThroughScreen = ({ navigation, route }) => {
       <View style={mergeStyles(styles.row, styles.justifyCenter, styles.marginTop2, styles.marginBottom)}>
         {/* Page indicators */}
         {frames.map((element: { desc: string; title: string }, index: number) => {
-          if (index === frames.length - 1) return <View style={{ display: "none" }} />
+          if (index === frames.length) return <View style={{ display: "none" }} />
           return (
             <View
               key={element.desc + element.title}
@@ -117,15 +118,19 @@ export const WalkThroughScreen = ({ navigation, route }) => {
         ref={textCarousel}
         horizontal
         pagingEnabled
-        scrollEnabled={false}
         showsHorizontalScrollIndicator={false}
+        keyExtractor={(item, index) => `title-${item.title}`}
         renderItem={({ item }: { item: { title: string; desc: string } }) => (
           <View
-            style={mergeStyles(styles.flex, styles.alignCenter, styles.padBottom3, styles.justifyEvenly, { width })}
+            key={`title-${item.title}`}
+            style={mergeStyles(styles.flex, styles.alignCenter, styles.padTop3, styles.justifyEvenly, {
+              width: width,
+              height: width * 0.4,
+            })}
           >
             <Text preset="title1" text={item.title} />
             <Text
-              style={mergeStyles(styles.marginHorizontal4, styles.alignTextCenter)}
+              style={mergeStyles(styles.marginHorizontal4, styles.alignTextCenter, styles.padTop)}
               preset="body8"
               numberOfLines={5}
               text={item.desc}
@@ -133,12 +138,6 @@ export const WalkThroughScreen = ({ navigation, route }) => {
           </View>
         )}
       />
-      <TouchableOpacity
-        onPress={() => navigation.navigate("UserPermissions", { invite })}
-        style={mergeStyles(styles.alignEnd, styles.marginRight3, styles.padRight2)}
-      >
-        <Text preset="body1" style={{ color: "#519aca" }} text="SKIP" />
-      </TouchableOpacity>
     </View>
   )
 }

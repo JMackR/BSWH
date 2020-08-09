@@ -3,23 +3,21 @@ import { Platform } from "react-native"
 export const ROOT_URL = Platform.OS === "ios" ? "http:127.0.0.1:3000/data/" : "http://10.0.2.2:3000/data/"
 
 import blueWave from "./images/blue-wave.png"
-import whiteWave from "./images/white-wave.png"
+import whiteWave from "./images/single-wave.png"
 
-import inspireScreen from "./images/inspire-screen.png"
-import storyScreen from "./images/search-screen.png"
+import inspireScreen from "./images/list.png"
+import storyScreen from "./images/details.png"
 
 export const frames = [
   {
-    title: "INSPIRE YOUR PEOPLE",
-    desc:
-      "TRIBAL is a relationship and community-building platform that helps leaders connect with, grow, and inspire their people.",
+    title: "SAY HELLO TO BETTER.",
+    desc: "Find Dr. Right®, schedule an appointment, search for same-day care near you and more.",
     image: blueWave,
     screen: inspireScreen,
   },
   {
-    title: "WE ALL HAVE A STORY",
-    desc:
-      "So why not tell yours? TRIBAL uses strategic storytelling to enable and enhance meaningful relationships across all levels of the organization.",
+    title: "STAY CONNECTED TO YOUR HEALTH.",
+    desc: "Access all your health information in one place.",
     image: whiteWave,
     screen: storyScreen,
   },

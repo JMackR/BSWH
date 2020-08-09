@@ -1,5 +1,5 @@
-import React, { useState, useContext, useRef } from "react"
-import { View, Platform, r, TouchableOpacity } from "react-native"
+import React, { useState, useRef } from "react"
+import { View, Platform, TouchableOpacity, Alert } from "react-native"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import { BrandView, Icon, Text, TextField } from "../../components"
 import { useNavigation } from "@react-navigation/native"
@@ -7,61 +7,55 @@ import { GoogleAuth, FacebookAuth, AppleAuth, EmailSignIn } from "../../services
 import { mergeStyles } from "../../utils/styles"
 import { styles } from "../../theme/styles"
 
-interface UserData {
-  email: string
-  password1: string
-}
-
 export const LoginScreen = () => {
-  const passwordRef = useRef(null)
-  const { goBack, navigate } = useNavigation()
-  const [values, setValues] = useState({
+  const { navigate } = useNavigation()
+
+  /**
+   * TODO these functions should be refactored to be it's own custom hook to share with register screen
+   */
+  const [prefs, setPreferences] = useState({
+    agreed_to_terms: false,
     email: "",
-    password1: "",
-  } as UserData)
-
-  const [isVisible, setPasswordVisible] = useState(false)
-
-  const showPassword = () => {
-    setPasswordVisible({
-      hidePassword: !isVisible,
-    })
-  }
-  const emailSignIn = () => {
-    EmailSignIn(values).then((result) => {
-      if (result === "success") {
-        goBack()
-      }
-    })
-  }
+    password: "",
+  })
 
   const setUserData = (field: any, value: any) => {
-    setValues((values) => ({
-      ...values,
+    setPreferences((prefs) => ({
+      ...prefs,
       [field]: value,
     }))
+  }
+
+  const emailSignIn = () => {
+    EmailSignIn(prefs).then((result) => {
+      if (result === "success") {
+        navigate("Main", { screen: "Directory" })
+      } else {
+        displayError()
+      }
+    })
   }
 
   const socialLogin = (provider: any) => {
     switch (provider) {
       case "Facebook":
-        FacebookAuth().then((result) => {
+        FacebookAuth(prefs).then((result) => {
           if (result === "success") {
-            goBack()
+            navigate("Walkthrough")
           }
         })
         break
       case "Google":
-        GoogleAuth().then((result) => {
+        GoogleAuth(prefs).then((result) => {
           if (result === "success") {
-            goBack()
+            navigate("Walkthrough")
           }
         })
         break
       case "Apple":
-        AppleAuth().then((result) => {
+        AppleAuth(prefs).then((result) => {
           if (result === "success") {
-            goBack()
+            navigate("Walkthrough")
           }
         })
         break
@@ -69,16 +63,29 @@ export const LoginScreen = () => {
         throw new Error("Unsupported SNS" + provider)
     }
   }
-
+  const displayError = () => {
+    Alert.alert(
+      "Please try again",
+      "Check your Email and Password",
+      [
+        {
+          text: "OK",
+          onPress: () => console.log("Pressed No"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false },
+    )
+  }
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <BrandView
         renderNext
         renderSkip
         skipLabel="Cancel"
-        nextLabel="Log In"
+        nextLabel="Register"
         onPressSkip={() => navigate("Entry")}
-        // onPress={this.handleAWSLogin}
+        onPress={emailSignIn}
       >
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
@@ -96,17 +103,13 @@ export const LoginScreen = () => {
             onChangeText={(text) => setUserData("email", text)}
             keyboardType="email-address"
             style={styles.marginBottom2}
-            onSubmitEditing={() => passwordRef.current.focus()}
           />
           <TextField
-            forwardedRef={passwordRef}
             preset={"light"}
             autoCapitalize="none"
             placeholder="Password"
             editable={true}
-            togglePassword={() => showPassword()}
-            showPassword={isVisible}
-            secureTextEntry={isVisible}
+            secureTextEntry={true}
             onChangeText={(text) => setUserData("password", text)}
             onSubmitEditing={() => emailSignIn()}
           />

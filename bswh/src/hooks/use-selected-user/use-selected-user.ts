@@ -2,13 +2,19 @@ import * as React from "react"
 export interface SelectedUser {
   user: object
 }
-export const useSelectedUser = (user): SelectedUser => {
+export const useSelectedUser = (): SelectedUser => {
   const [selectedUser, setSelectedUser] = React.useState(undefined)
 
-  React.useEffect(() => {
-    setSelectedUser(user)
-    return () => setSelectedUser(undefined)
-  }, [])
+  const [user, setData] = React.useState()
 
-  return selectedUser
+  const execute = React.useCallback(() => {
+    return setData(selectedUser)
+  }, [selectedUser])
+
+  React.useEffect(() => {
+    if (selectedUser) {
+      execute()
+    }
+  }, [execute, selectedUser])
+  return [{ user }, setSelectedUser]
 }

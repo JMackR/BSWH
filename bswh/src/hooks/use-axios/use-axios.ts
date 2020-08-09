@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react"
 import axios from "axios"
-import { ROOT_URL } from "../../constants"
 
 interface TUseAxios {
   url: string
@@ -19,7 +18,7 @@ export const useAxios = (initialUrl?: Request, initialData?: Response): Promise<
   const [url, setUrl] = useState<TUseAxios>(initialUrl)
   const [status, setStatus] = useState("idle")
   const [error, setError] = useState(null)
-  console.log("wha is the url", url)
+  // console.log("wha is the url", url)
   // The execute function wraps asyncFunction and
   // handles setting state for pending, value, and error.
   // useCallback ensures the below useEffect is not called
@@ -29,10 +28,10 @@ export const useAxios = (initialUrl?: Request, initialData?: Response): Promise<
     setData([])
     setError(null)
     return axios
-      .get<TNumbers>(`${ROOT_URL}${url}`)
+      .get<TNumbers>(`${url}`)
       .then((response) => {
-        if (response.data?.status === 200) {
-          setData(response.data?.data)
+        if (response.status === 200) {
+          setData(response.data)
           setStatus("success")
         }
       })
@@ -49,6 +48,5 @@ export const useAxios = (initialUrl?: Request, initialData?: Response): Promise<
       execute()
     }
   }, [execute, url])
-
   return [{ data, status, error }, setUrl]
 }

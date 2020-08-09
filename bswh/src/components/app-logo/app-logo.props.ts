@@ -1,9 +1,9 @@
-import { TribeLogoPresetNames } from "./app-logo.presets"
+import { AppLogoPresets } from "./app-logo.presets"
 import { ViewStyle } from "react-native"
 
 export interface AppLogoProps {
   /** The preset, determines size */
-  preset: TribeLogoPresetNames
+  preset: AppLogoPresets
   /** The image URL */
   image?: string
   /** Additional style */

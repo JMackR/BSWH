@@ -5,7 +5,7 @@ import appleAuth, {
 import auth from "@react-native-firebase/auth"
 import { LoginFunctions } from "."
 
-export const AppleAuth = async prefs => {
+export const AppleAuth = async (prefs) => {
   // Start the sign-in request
   const appleAuthRequestResponse = await appleAuth.performRequest({
     requestedOperation: AppleAuthRequestOperation.LOGIN,
@@ -22,7 +22,7 @@ export const AppleAuth = async prefs => {
   const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce)
 
   // Sign the user in with the credential
-  return LoginFunctions.signInOrLink(
+  return LoginFunctions.signIn(
     auth.GoogleAuthProvider.PROVIDER_ID,
     appleCredential,
     appleAuthRequestResponse.email,

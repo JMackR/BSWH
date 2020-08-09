@@ -1,13 +1,14 @@
 import React from "react"
 import { createStackNavigator } from "@react-navigation/stack"
 import { AppLogo } from "../../components"
-import { defaultScreenOptions, NavigationBackButton } from "../options"
-import { DirectoryScreen, UserInfo } from "../../screens"
+import { defaultScreenOptions, FullScreenModalOptions, NavigationBackButton } from "../options"
+import { DirectoryScreen, UserDetailsScreen, WalkThroughScreen } from "../../screens"
 
 const Stack = createStackNavigator()
 export const AppNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={defaultScreenOptions} initialRouteName={"Directory"}>
+    <Stack.Navigator initialRouteName={"WalkThrough"}>
+      <Stack.Screen name={"WalkThrough"} component={WalkThroughScreen} options={FullScreenModalOptions} />
       <Stack.Screen
         name="Directory"
         component={DirectoryScreen}
@@ -18,8 +19,8 @@ export const AppNavigator = () => {
         })}
       />
       <Stack.Screen
-        name="User Info"
-        component={UserInfo}
+        name="UserDetails"
+        component={UserDetailsScreen}
         options={() => ({
           ...defaultScreenOptions,
           headerLeft: (_) => <NavigationBackButton />,
