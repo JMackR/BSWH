@@ -1,0 +1,20 @@
+export const palette = {
+  black: "#000000",
+  white: "#FFFFFF",
+  lightgreen: "#14A74C",
+  lightpurple: "#AA92BF",
+  lightred: "#FDDFDF",
+  green: "#7CE2CB",
+  lightgray: "#EDEDED",
+  darkpurple: "#3A3241",
+  darkred: "#FF5050",
+  lightblue: "#E7F1F8",
+  charcoal: "#3D3D3D",
+  skyblue: "#3D9DD3",
+  gray1: "#6A6A6A",
+  gray2: "#DADADA",
+  gray3: "#EEEEEE",
+  gray4: "#F2F2F3",
+  gray5: "#F8F8F9", // TODO Not in style guide
+  developer: "#FF00FF",
+}
