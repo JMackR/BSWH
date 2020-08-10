@@ -2,11 +2,16 @@
 
 # Description: Display list of names 
 
-![Image of IOS]
-
-
-![Image of ANDROID]
-
+## Features to look for:
+ * Fully operational Death Star and Firebase Auth system with Email/Facebook/Apple authentication. You will be signing in to firebase if you would like to see the backend set up shoot me an email and I'll add your creds to the console.
+ * Navigation system using react-navigation v5 utilizing React Hooks Context to provide needed data and custom hook functionality to an authenticated user
+ * App Context provider can be found in the /providers folder
+ * Custom Hooks used to provide the selected user to other parts of the app
+ * Custom Axios hook to fetch the data 
+ * When the data is fetched the array of users are filtered and sorted by the users last name and displayed alphebetically
+ * Had some fun regexing... nobody like regexing
+ * When a user is selected you are navigated to the details screen when there is a handy little function to look for missing data and avoid displaying unused and avoid potential crashed from nested props.
+ 
 
 # Setting up the development environment 
 
