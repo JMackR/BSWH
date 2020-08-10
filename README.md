@@ -8,7 +8,7 @@
  * App Context provider can be found in the /providers folder
  * Custom Hooks used to provide the selected user to other parts of the app
  * Custom Axios hook to fetch the data 
- * When the data is fetched the array of users are filtered and sorted by the users last name and displayed alphebetically
+ * When the data is fetched the array of users are filtered and sorted by the users last name and displayed alphabetically
  * Had some fun regexing... nobody like regexing
  * When a user is selected you are navigated to the details screen when there is a handy little function to look for missing data and avoid displaying unused and avoid potential crashed from nested props.
  
